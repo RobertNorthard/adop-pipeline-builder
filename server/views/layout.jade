@@ -1,0 +1,27 @@
+doctype
+html
+	head
+		base(href="/")
+	body(ng-app="app")
+	div#tree
+	div.navbar.navbar-default
+		div.navbar-header
+			a.navbar-brand(href="/") ADOP Pipeline Builder
+			div.dialog(id="generate" title="Project Palette")
+				input.form-control.inline(type="text" id="projectName" value="Project name...")
+				button.btn.btn-primary(id="btnGenerate" type="button") Generate
+	div.main-content.panel-body
+		block content-main
+
+	script(src="http://code.jquery.com/jquery-1.11.1.min.js")
+	script(src="assets/vendor/angular/angular.min.js")
+	script(src="assets/vendor/angular-route/angular-route.min.js")
+	script(src="assets/vendor/bootstrap/dist/js/bootstrap.min.js")
+	script(src="assets/app/app.js")
+	script(src="http://d3js.org/d3.v3.min.js" charset="utf-8")
+	script(src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/3.8.1/js-yaml.js")
+	script(src="http://code.jquery.com/ui/1.11.1/jquery-ui.min.js")
+	link(href="assets/css/styles.css" rel="stylesheet")
+	link(href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" rel="stylesheet")
+	script(src="assets/js/tree.js")
+	link(href="assets/vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet")
