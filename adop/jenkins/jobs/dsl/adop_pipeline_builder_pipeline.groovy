@@ -38,7 +38,7 @@ getDockerfile.with{
   description("This job clones the specified local repository which contains the Dockerfile (and local resources).  It is the start of a pipeline that performs various testing stages.  The pipeline leads to a job called 'Image Push' that attempts to push to DockerHub.com.  For this to succeeed by default the job looks for a Jenkins credential called 'dockerhub-credentials'.  Only if that parameter is set and valid will the push to Dockehub.com succeed.  The subsequent 'Container Deploy' job also requires the same credentials.")
   parameters{
     stringParam("IMAGE_REPO",dockerfileGitUrl,"Repository location of your Dockerfile")
-    stringParam("IMAGE_TAG",'tomcat8',"Enter a unique string to tag your images (Note: Upper case chararacters are not allowed)")
+    stringParam("IMAGE_TAG",'adop-pipeline-builder',"Enter a unique string to tag your images (Note: Upper case chararacters are not allowed)")
     stringParam("CLAIR_DB",'',"URI for the Clair PostgreSQL database in the format postgresql://postgres:password@postgres:5432?sslmode=disable (ignore parameter as it is currently unsupported)")
   }
   wrappers {
@@ -426,7 +426,7 @@ dockerCleanup.with{
   parameters{
     stringParam("B",'',"Parent build number")
     stringParam("PARENT_BUILD","Docker_Build","Parent build name")
-    stringParam("IMAGE_TAG",'tomcat8',"Enter the string value which you entered to tag your images (Note: Upper case chararacters are not allowed)")
+    stringParam("IMAGE_TAG",'adop-pipeline-builder',"Enter the string value which you entered to tag your images (Note: Upper case chararacters are not allowed)")
     choiceParam('CONTAINER_DELETION', ['SINGLE', 'ALL'], 'Choose whether to delete the container created by this run of the pipeline or all the containers created by each run of the pipeline.')
   }
   wrappers {
