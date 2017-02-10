@@ -28,8 +28,8 @@ var json =
 var width = 700;
 var height = 650;
 var maxLabel = 150;
-var duration = 500;
-var radius = 15;
+var duration = 800;
+var radius = 20;
     
 var i = 0;
 var root;
@@ -278,7 +278,7 @@ function click(d)
 $("#btnGenerate").click(function(){
 
     var cartridgeCollection = {
-        "name": "cartridgeName",
+        "name": $("#projectName").val(),
         "cartridges": []
     }
 
@@ -330,6 +330,37 @@ $("#btnGenerate").click(function(){
     }
 
     console.log(JSON.stringify(cartridgeCollection));
+
+    var gist;
+    var data = {
+        "description": "ADOP Cartridge Collection: " + $("#projectName").val(),
+        "public": true,
+        "files": {
+          "cartridge_collection.json": {
+            "content": JSON.stringify(cartridgeCollection)
+          }
+        }
+      }
+      $.ajax({
+        url: 'https://api.github.com/gists',
+        type: 'POST',
+        dataType: 'json',
+        data: JSON.stringify(data)
+      })
+      .success( function(e) {
+        console.log(e);
+        console.log("https://gist.github.com/anonymous/" + e.id + "/raw");
+        gist = "https://gist.github.com/anonymous/" + e.id + "/raw";
+
+        $("#alert").empty();
+        $("#alert").show();
+        $("#alert").append("Your cartridge collection Gist: <a href='" + gist + "'>" + gist + "</a>");
+        setTimeout(function() { $("#alert").hide(); }, 10000);
+      })
+      .error( function(e) {
+        console.warn("gist save error", e);
+      });
+
 });
 
 update(root);
@@ -348,5 +379,6 @@ var cartridgeSchema = {
         "downstream": ""
      }
 }
+
 
 $("#generate").dialog({modal:false});
