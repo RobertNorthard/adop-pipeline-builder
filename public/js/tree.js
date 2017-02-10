@@ -9,7 +9,7 @@ var ciCount = 1;
 var cartridges;
 
 // haha such as hack.
-$.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/6a2e3bd12d10b93a2c2d63d82ade3cb84b15c149/cartridges.yml')
+$.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/cartridges.yml')
     .done(function (data) {
           cartridges = jsyaml.load(data);
           var jsonString = JSON.stringify(data);
