@@ -18,7 +18,7 @@ def dockerDeploy = freeStyleJob(projectFolderName + "/Container_Deploy")
 def dockerCleanup = freeStyleJob(projectFolderName + "/Container_Cleanup")
 
 // Views
-def pipelineView = buildPipelineView(projectFolderName + "/Sample_Docker_CI")
+def pipelineView = buildPipelineView(projectFolderName + "/Pipeline_Builder_CI")
 
 pipelineView.with{
   title('ADOP Pipeline Builder Pipeline')
