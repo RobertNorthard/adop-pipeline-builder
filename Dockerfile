@@ -2,7 +2,7 @@ FROM node:latest
 
 MAINTAINER Mark Rendell, <markosrendell@gmail.com>
 
-COPY * /data/
+COPY ./ /data/
 
 WORKDIR /data
 
