@@ -9,4 +9,4 @@ WORKDIR /data
 RUN bower install && \
     npm install
 
-CMD npm start
+CMD ["npm" "start"]
