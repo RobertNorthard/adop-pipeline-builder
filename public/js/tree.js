@@ -3,7 +3,8 @@
 
 var current;
 var currentRoot; 
-var intCount = 0;
+var intCount = 1;
+var ciCount = 1;
 
 var cartridges;
 
@@ -216,10 +217,10 @@ function click(d)
             }
 
             current.children.push({
-                "name": "CI",
+                "name": "CI" + (ciCount++),
                 "children": [
                 ],
-                "url": "https://github.com/Accenture/adop-cartridge-java.git",
+                "url": "https://github.com/kramos/adop-cartridge-ci-starter.git",
                 "parent":"",
                 "decs":"This is a CI pipeline.",
                 "type": "child",
