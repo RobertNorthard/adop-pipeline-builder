@@ -4,5 +4,5 @@ The Integrated Pipeline builder enables users to draw their production ready end
 
 ![HomePage](https://raw.githubusercontent.com/RobertNorthard/adop-pipeline-builder/master/img/screenshot.png)
 
-If you load this cartridge it is possible to extend this tool.  Also look out for the related [Integrated Pipeline platform extention](https://github.com/statlus/adop-platform-extension-pipeline-builder) that can be used to add this to an ADOP.
+If you load this cartridge it is possible to extend this tool.  Also look out for the related [Integrated Pipeline platform extension](https://github.com/statlus/adop-platform-extension-pipeline-builder) that can be used to add this to an ADOP.
 
