@@ -8,7 +8,7 @@ var intCount = 0;
 var cartridges;
 
 // haha such as hack.
-$.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/333acbd3b8a67ca0cff43ee88f4a9bbd79aca0c7/cartridges.yml')
+$.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/c21dad575b79f5506d803fbb2af4824f6a09fade/cartridges.yml')
     .done(function (data) {
           cartridges = jsyaml.load(data);
           var jsonString = JSON.stringify(data);
