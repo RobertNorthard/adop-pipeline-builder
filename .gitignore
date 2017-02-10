@@ -1,3 +1,9 @@
-
-node_modules/
-public/vendor/
+git-repos-vol
+elk-data-vol
+nexus-data-vol
+gerrit-site-vol
+volumes/elasticsearch-data-vol/elasticsearch/
+volumes/jenkins-home-vol
+*~
+*.swp
+*.swo
