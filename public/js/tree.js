@@ -17,13 +17,11 @@ $.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76
 
 var json = 
 {
-    "name": "PROD",
+    "name": "Production_Pipeline",
     "children": [],
     "url": "https://github.com/sham126/adop-cartridge-production.git",
     "type": "int",
-    "downstream": "Production_Pipeline",
     "desc":"Production Pipeline cartridge"
-    
 };
 
 var width = 700;
@@ -210,8 +208,10 @@ function click(d)
 
             var pipelineType;
 
-            if(current.name == "PROD"){
+            if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
+            }else if(current.type === "int") {
+                pipelineType = current.name;
             }else{
                 pipelineType = "Application_Pipeline"
             }
@@ -223,8 +223,8 @@ function click(d)
                 "url": "https://github.com/kramos/adop-cartridge-ci-starter.git",
                 "parent":"",
                 "decs":"This is a CI pipeline.",
-                "type": "child",
-                "downstream": pipelineType
+                "type": "ci",
+                "downstream_folder": pipelineType
             });
 
             update(current);
@@ -245,8 +245,10 @@ function click(d)
 
             var pipelineType;
 
-            if(current.name == "PROD"){
+            if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
+            }else if(current.type === "int") {
+                pipelineType = current.name;
             }else{
                 pipelineType = "Application_Pipeline"
             }
@@ -259,7 +261,7 @@ function click(d)
                 "parent":"",
                 "type": "int",
                 "desc": "This is in an integration pipeline.",
-                "downStream": pipelineType
+                "downstream_folder": pipelineType
             });
 
             update(currentRoot);
@@ -317,13 +319,11 @@ $("#btnGenerate").click(function(){
                 "cartridge": {
                     "url": c.url,
                     "desc": c.desc,
-                    "downstream": c.downstream
+                    "downstream_folder": c.downstream_folder
                  }
             });
 
         }      
-
-
 
         if(queue.length <= 0){
             active = false;
@@ -377,7 +377,7 @@ var cartridgeSchema = {
     "cartridge": {
         "url": "",
         "desc": "",
-        "downstream": ""
+        "downstream_folder": ""
      }
 }
 
