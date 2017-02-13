@@ -368,18 +368,4 @@ update(root);
 
 })()
 
-var cartridgeSchema = {
-    "folder": {
-        "name": "",
-        "display_name": "",
-        "description":  "",
-    },
-    "cartridge": {
-        "url": "",
-        "desc": "",
-        "downstream_folder": ""
-     }
-}
-
-
 $("#generate").dialog({modal:false});
