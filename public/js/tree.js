@@ -21,7 +21,7 @@ var json =
     "children": [],
     "url": "https://github.com/sham126/adop-cartridge-production.git",
     "type": "int",
-    "downstream": "Production_Pipeline",
+    "downstream_folder": "Production_Pipeline",
     "desc":"Production Pipeline cartridge"
     
 };
@@ -224,7 +224,7 @@ function click(d)
                 "parent":"",
                 "decs":"This is a CI pipeline.",
                 "type": "child",
-                "downstream": pipelineType
+                "downstream_folder": pipelineType
             });
 
             update(current);
@@ -259,7 +259,7 @@ function click(d)
                 "parent":"",
                 "type": "int",
                 "desc": "This is in an integration pipeline.",
-                "downStream": pipelineType
+                "downstream_folder": pipelineType
             });
 
             update(currentRoot);
@@ -317,7 +317,7 @@ $("#btnGenerate").click(function(){
                 "cartridge": {
                     "url": c.url,
                     "desc": c.desc,
-                    "downstream": c.downstream
+                    "downstream_folder": c.downstream_folder
                  }
             });
 
@@ -377,7 +377,7 @@ var cartridgeSchema = {
     "cartridge": {
         "url": "",
         "desc": "",
-        "downstream": ""
+        "downstream_folder": ""
      }
 }
 
