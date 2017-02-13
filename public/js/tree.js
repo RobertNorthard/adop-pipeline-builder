@@ -21,9 +21,7 @@ var json =
     "children": [],
     "url": "https://github.com/sham126/adop-cartridge-production.git",
     "type": "int",
-    "downstream_folder": "Production_Pipeline",
     "desc":"Production Pipeline cartridge"
-    
 };
 
 var width = 700;
@@ -212,6 +210,8 @@ function click(d)
 
             if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
+            }else if(current.type === "int") {
+                pipelineType = current.name;
             }else{
                 pipelineType = "Application_Pipeline"
             }
@@ -223,7 +223,7 @@ function click(d)
                 "url": "https://github.com/kramos/adop-cartridge-ci-starter.git",
                 "parent":"",
                 "decs":"This is a CI pipeline.",
-                "type": "child",
+                "type": "ci",
                 "downstream_folder": pipelineType
             });
 
@@ -247,6 +247,8 @@ function click(d)
 
             if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
+            }else if(current.type === "int") {
+                pipelineType = current.name;
             }else{
                 pipelineType = "Application_Pipeline"
             }
@@ -322,8 +324,6 @@ $("#btnGenerate").click(function(){
             });
 
         }      
-
-
 
         if(queue.length <= 0){
             active = false;
