@@ -17,7 +17,7 @@ $.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76
 
 var json = 
 {
-    "name": "PROD",
+    "name": "Production_Pipeline",
     "children": [],
     "url": "https://github.com/sham126/adop-cartridge-production.git",
     "type": "int",
@@ -210,7 +210,7 @@ function click(d)
 
             var pipelineType;
 
-            if(current.name == "PROD"){
+            if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
             }else{
                 pipelineType = "Application_Pipeline"
@@ -245,7 +245,7 @@ function click(d)
 
             var pipelineType;
 
-            if(current.name == "PROD"){
+            if(current.name == "Production_Pipeline"){
                 pipelineType = "Production_Pipeline"
             }else{
                 pipelineType = "Application_Pipeline"
