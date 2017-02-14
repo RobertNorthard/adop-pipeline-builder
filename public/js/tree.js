@@ -349,8 +349,6 @@ $("#btnGenerate").click(function(){
         data: JSON.stringify(data)
       })
       .success( function(e) {
-        console.log(e);
-        console.log("https://gist.github.com/anonymous/" + e.id + "/raw");
         gist = "https://gist.github.com/anonymous/" + e.id + "/raw";
 
         $("#alert").empty();
