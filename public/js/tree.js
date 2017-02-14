@@ -175,10 +175,8 @@ function click(d)
         $("#manageComponant").dialog({modal:true});
     }else{
         l =  $.map(cartridges, function(v,k){return k;});
-        console.log(l);
         $("#cartridges").empty();
         for(var i in l){
-            console.log(i);
             $("#cartridges").append( '<option value="'+l[i]+'">' + l[i]+'</option>' );
         }
 
@@ -187,9 +185,6 @@ function click(d)
         $("#setCartridge").click(function(){
             current.name = cartridges[$("#cartridges").val()].name.replace(/ /g,"_");
             current.url = cartridges[$("#cartridges").val()].url;
-
-            console.log(current.name);
-            console.log(current.url);
 
             update(currentRoot);
             current = undefined;
@@ -289,9 +284,6 @@ $("#btnGenerate").click(function(){
 
     queue.push(root);
 
-    console.log("root - " + root);
-    console.log(root);
-
     var active = true;
 
     while(active == true){
@@ -302,7 +294,6 @@ $("#btnGenerate").click(function(){
                 queue.push(c.children[i]);
             }
            
-           console.log("children - " + c.children);
         }catch(err){}
 
         console.log("child " + queue);
@@ -349,8 +340,6 @@ $("#btnGenerate").click(function(){
         data: JSON.stringify(data)
       })
       .success( function(e) {
-        console.log(e);
-        console.log("https://gist.github.com/anonymous/" + e.id + "/raw");
         gist = "https://gist.github.com/anonymous/" + e.id + "/raw";
 
         $("#alert").empty();
@@ -367,19 +356,5 @@ $("#btnGenerate").click(function(){
 update(root);
 
 })()
-
-var cartridgeSchema = {
-    "folder": {
-        "name": "",
-        "display_name": "",
-        "description":  "",
-    },
-    "cartridge": {
-        "url": "",
-        "desc": "",
-        "downstream_folder": ""
-     }
-}
-
 
 $("#generate").dialog({modal:false});
