@@ -13,9 +13,9 @@ def staticCodeAnalysis = freeStyleJob(projectFolderName + "/Static_Code_Analysis
 def dockerBuild = freeStyleJob(projectFolderName + "/Image_Build")
 def containerTest = freeStyleJob(projectFolderName + "/Container_Test")
 def vulnerabilityScan = freeStyleJob(projectFolderName + "/Vulnerability_Scan")
-def dockerPush = freeStyleJob(projectFolderName + "/Image_Push")
-def dockerDeploy = freeStyleJob(projectFolderName + "/Container_Deploy")
+def dockerDeploy = freeStyleJob(projectFolderName + "/Deploy")
 def dockerCleanup = freeStyleJob(projectFolderName + "/Container_Cleanup")
+def dockerPush = freeStyleJob(projectFolderName + "/Image_Push")
 
 // Views
 def pipelineView = buildPipelineView(projectFolderName + "/Pipeline_Builder_CI")
@@ -98,7 +98,7 @@ getDockerfile.with{
 }
 
 staticCodeAnalysis.with{
-  description("This job performs static code analysis on the Dockerfile using the Redcoolbeans Dockerlint image. It assumes that the Dockerfile exists in the root of the directory structure.")
+  description("This job performs static code analysis on the Dockerfile using the Redcoolbeans Dockerlint image. It assumes that the Dockerfile exists in the root of the directory structure.  After that it runs es_lint on the JavaScript.")
   parameters{
     stringParam("B",'',"Parent build number")
     stringParam("PARENT_BUILD","Get_Source","Parent build name")
@@ -135,6 +135,11 @@ staticCodeAnalysis.with{
             | cat ${WORKSPACE}/${JOB_NAME##*/}.out
             |fi
             |
+            |echo "Building the docker image in dev mode"
+            |rm -rf node_modules/
+            |docker build --build-arg NODE_ENV=dev --tag ${IMAGE_TAG}:${B} ${WORKSPACE}/.
+            |docker run --rm ${IMAGE_TAG}:${B} run lint
+            |
             |'''.stripMargin())
   }
   publishers{
@@ -158,7 +163,7 @@ dockerBuild.with{
     parameters{
         stringParam("B",'',"Parent build number")
         stringParam("PARENT_BUILD","Get_Source","Parent build name")
-        stringParam("IMAGE_TAG",'',"Enter a unique string to tag your images e.g. your enterprise ID (Note: Upper case chararacters are not allowed)")
+        stringParam("IMAGE_TAG",'adop-pipeline-builder',"Enter a unique string to tag your images e.g. your enterprise ID (Note: Upper case chararacters are not allowed)")
         stringParam("CLAIR_DB",'',"URI for the Clair PostgreSQL database in the format postgresql://postgres:password@postgres:5432?sslmode=disable")
     }
     environmentVariables {
@@ -180,7 +185,8 @@ dockerBuild.with{
         }
         shell('''set -xe
                 |echo "Building the docker image locally..."
-                |docker build -t ${IMAGE_TAG}:${B} ${WORKSPACE}/.
+                |rm -rf node_modules/
+                |docker build --build-arg NODE_ENV=production --tag ${IMAGE_TAG}:${B} ${WORKSPACE}/.
                 |docker inspect ${IMAGE_TAG}:${B}
                 |'''.stripMargin())
 	}
@@ -313,7 +319,7 @@ vulnerabilityScan.with{
   }
   publishers{
     downstreamParameterized{
-      trigger(projectFolderName + "/Image_Push"){
+      trigger(projectFolderName + "/Deploy"){
         condition("UNSTABLE_OR_BETTER")
         parameters{
           predefinedProp("B",'${B}')
@@ -325,55 +331,6 @@ vulnerabilityScan.with{
   }
 }
 
-dockerPush.with{
-  description("This job pushes the fully tested Docker image to Dockerhub.com.")
-  parameters{
-    stringParam("B",'',"Parent build number")
-    stringParam("PARENT_BUILD","Docker_Build","Parent build name")
-    stringParam("IMAGE_TAG",'',"Enter a unique string to tag your images e.g. your enterprise ID (Note: Upper case chararacters are not allowed)")
-    credentialsParam("DOCKER_LOGIN"){
-        type('com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl')
-        defaultValue('dockerhub-credentials')
-        description('Dockerhub username and password. Please make sure the credentials are added with ID "dockerhub-credentials"')
-    }
-  }
-  wrappers {
-    preBuildCleanup()
-    injectPasswords()
-    maskPasswords()
-    sshAgent("adop-jenkins-master")
-    credentialsBinding {
-        usernamePassword("DOCKERHUB_USERNAME", "DOCKERHUB_PASSWORD", '${DOCKER_LOGIN}')
-    }
-  }
-  environmentVariables {
-      env('WORKSPACE_NAME',workspaceFolderName)
-      env('PROJECT_NAME',projectFolderName)
-  }
-  label("docker")
-  steps {
-    shell('''set -e
-            |set +x
-            |IMAGE_TAG=$(echo "$IMAGE_TAG" | awk '{print tolower($0)}')
-            |docker tag ${IMAGE_TAG}:${B} ${DOCKERHUB_USERNAME}/${IMAGE_TAG}:${B}
-            |docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} -e devops@adop.com
-            |docker push ${DOCKERHUB_USERNAME}/${IMAGE_TAG}:${B}
-            |
-            |'''.stripMargin())
-  }
-  publishers{
-    downstreamParameterized{
-      trigger(projectFolderName + "/Container_Deploy"){
-        condition("UNSTABLE_OR_BETTER")
-        parameters{
-          predefinedProp("B",'${B}')
-          predefinedProp("PARENT_BUILD",'${PARENT_BUILD}')
-          predefinedProp("IMAGE_TAG",'${IMAGE_TAG}')
-        }
-      }
-    }
-  }
-}
 
 dockerDeploy.with{
   description("This job pulls the Image back from Dockerhub.com and attempts to run it.")
@@ -459,4 +416,54 @@ dockerCleanup.with{
             |fi
             |'''.stripMargin())
   }
+
+  publishers{
+    buildPipelineTrigger(projectFolderName + "/Image_Push") {
+      parameters {
+          predefinedProp("B",'${B}')
+          predefinedProp("PARENT_BUILD",'${PARENT_BUILD}')
+          predefinedProp("IMAGE_TAG",'${IMAGE_TAG}')
+      }
+    }
+  }
 }
+
+
+dockerPush.with{
+  description("This job pushes the fully tested Docker image to Dockerhub.com.")
+  parameters{
+    stringParam("B",'',"Parent build number")
+    stringParam("PARENT_BUILD","Docker_Build","Parent build name")
+    stringParam("IMAGE_TAG",'',"Enter a unique string to tag your images e.g. your enterprise ID (Note: Upper case chararacters are not allowed)")
+    credentialsParam("DOCKER_LOGIN"){
+        type('com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl')
+        defaultValue('dockerhub-credentials')
+        description('Dockerhub username and password. Please make sure the credentials are added with ID "dockerhub-credentials"')
+    }
+  }
+  wrappers {
+    preBuildCleanup()
+    injectPasswords()
+    maskPasswords()
+    sshAgent("adop-jenkins-master")
+    credentialsBinding {
+        usernamePassword("DOCKERHUB_USERNAME", "DOCKERHUB_PASSWORD", '${DOCKER_LOGIN}')
+    }
+  }
+  environmentVariables {
+      env('WORKSPACE_NAME',workspaceFolderName)
+      env('PROJECT_NAME',projectFolderName)
+  }
+  label("docker")
+  steps {
+    shell('''set -e
+            |set +x
+            |IMAGE_TAG=$(echo "$IMAGE_TAG" | awk '{print tolower($0)}')
+            |docker tag ${IMAGE_TAG}:${B} ${DOCKERHUB_USERNAME}/${IMAGE_TAG}:${B}
+            |docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} -e devops@adop.com
+            |docker push ${DOCKERHUB_USERNAME}/${IMAGE_TAG}:${B}
+            |
+            |'''.stripMargin())
+  }
+}
+

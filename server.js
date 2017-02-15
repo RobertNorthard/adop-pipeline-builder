@@ -1,9 +1,9 @@
-'use strict'
+'use strict';
 
-var express = require('express'),
-		logger = require('morgan'),
-		bodyParser = require('body-parser'),
-		path = require('path');
+var express = require('express');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
+var path = require('path');
 
 var env = process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -15,12 +15,12 @@ app.use('/assets', express.static(path.join(__dirname, 'public/')));
 app.use(logger('dev'));
 app.use(bodyParser());
 
-app.get('/partials/:partialPath', function(request, response){
-	response.render('partials/' + request.params.partialPath);	
+app.get('/partials/:partialPath', function (request, response) {
+  response.render(path.join('partials/', request.params.partialPath));
 });
 
-app.get('*', function(request,response){
-	response.render('index');
+app.get('*', function (request, response) {
+  response.render('index');
 });
 
 var port = 3000;
