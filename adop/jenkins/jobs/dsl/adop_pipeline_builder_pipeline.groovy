@@ -338,20 +338,12 @@ dockerDeploy.with{
     stringParam("B",'',"Parent build number")
     stringParam("PARENT_BUILD","Docker_Build","Parent build name")
     stringParam("IMAGE_TAG",'',"Enter a unique string to tag your images e.g. your enterprise ID (Note: Upper case chararacters are not allowed)")
-    credentialsParam("DOCKER_LOGIN"){
-        type('com.cloudbees.plugins.credentials.impl.UsernamePasswordCredentialsImpl')
-        defaultValue('dockerhub-credentials')
-        description('Dockerhub username and password. Please make sure the credentials are added with ID "dockerhub-credentials"')
-    }
   }
   wrappers {
     preBuildCleanup()
     injectPasswords()
     maskPasswords()
     sshAgent("adop-jenkins-master")
-    credentialsBinding {
-        usernamePassword("DOCKERHUB_USERNAME", "DOCKERHUB_PASSWORD", '${DOCKER_LOGIN}')
-    }
   }
   environmentVariables {
       env('WORKSPACE_NAME',workspaceFolderName)
@@ -362,8 +354,7 @@ dockerDeploy.with{
     shell('''set -e
             |set +x
             |IMAGE_TAG=$(echo "$IMAGE_TAG" | awk '{print tolower($0)}')           
-            |docker login -u ${DOCKERHUB_USERNAME} -p ${DOCKERHUB_PASSWORD} -e devops@adop.com
-            |docker run -d --name jenkins_${IMAGE_TAG}_${B} ${DOCKERHUB_USERNAME}/${IMAGE_TAG}:${B}
+            |docker run -d -P --net=local_network --name jenkins_${IMAGE_TAG}_${B} ${IMAGE_TAG}:${B}
             |
             |'''.stripMargin())
   }
