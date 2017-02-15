@@ -1,4 +1,3 @@
-node_modules
 git-repos-vol
 elk-data-vol
 nexus-data-vol
@@ -8,4 +7,5 @@ volumes/jenkins-home-vol
 *~
 *.swp
 *.swo
-
+node_modules/
+public/vendor/

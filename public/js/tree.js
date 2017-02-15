@@ -18,13 +18,11 @@
 
   var json =
     {
-      'name': 'PROD',
+      'name': 'Production_Pipeline',
       'children': [],
       'url': 'https://github.com/sham126/adop-cartridge-production.git',
       'type': 'int',
-      'downstream': 'Production_Pipeline',
       'desc': 'Production Pipeline cartridge'
-
     };
 
   var width = 700;
@@ -60,7 +58,7 @@
     // Normalize for fixed-depth.
     nodes.forEach(function (d) { d.y = d.depth * maxLabel; });
 
-    // Update the nodes…
+    // Update the nodes�
     var node = svg.selectAll('g.node')
         .data(nodes, function (d) {
           return d.id || (d.id = ++i);
@@ -109,7 +107,7 @@
     nodeExit.select('circle').attr('r', 0);
     nodeExit.select('text').style('fill-opacity', 0);
 
-    // Update the links…
+    // Update the links�
     var link = svg.selectAll('path.link')
         .data(links, function (d) { return d.target.id; });
 
@@ -171,10 +169,8 @@
       $('#manageComponant').dialog({modal: true});
     } else {
       l = $.map(cartridges, function (v, k) { return k; });
-      console.log(l);
       $('#cartridges').empty();
       for (var i in l) {
-        console.log(i);
         $('#cartridges').append('<option value="' + l[i] + '">' + l[i] + '</option>');
       }
 
@@ -183,9 +179,6 @@
       $('#setCartridge').click(function () {
         current.name = cartridges[$('#cartridges').val()].name.replace(/ /g, '_');
         current.url = cartridges[$('#cartridges').val()].url;
-
-        console.log(current.name);
-        console.log(current.url);
 
         update(currentRoot);
         current = undefined;
@@ -204,8 +197,10 @@
 
         var pipelineType;
 
-        if (current.name === 'PROD') {
+        if (current.name === 'Production_Pipeline') {
           pipelineType = 'Production_Pipeline';
+        } else if (current.type === 'int') {
+          pipelineType = current.name;
         } else {
           pipelineType = 'Application_Pipeline';
         }
@@ -217,8 +212,8 @@
           'url': 'https://github.com/kramos/adop-cartridge-ci-starter.git',
           'parent': '',
           'decs': 'This is a CI pipeline.',
-          'type': 'child',
-          'downstream': pipelineType
+          'type': 'ci',
+          'downstream_folder': pipelineType
         });
 
         update(current);
@@ -239,8 +234,10 @@
 
         var pipelineType;
 
-        if (current.name === 'PROD') {
+        if (current.name === 'Production_Pipeline') {
           pipelineType = 'Production_Pipeline';
+        } else if (current.type === 'int') {
+          pipelineType = current.name;
         } else {
           pipelineType = 'Application_Pipeline';
         }
@@ -253,7 +250,7 @@
           'parent': '',
           'type': 'int',
           'desc': 'This is in an integration pipeline.',
-          'downStream': pipelineType
+          'downstream_folder': pipelineType
         });
 
         update(currentRoot);
@@ -280,9 +277,6 @@
 
     queue.push(root);
 
-    console.log('root - ' + root);
-    console.log(root);
-
     var active = true;
 
     while (active === true) {
@@ -293,7 +287,6 @@
           queue.push(c.children[i]);
         }
 
-        console.log('children - ' + c.children);
       } catch (err) {}
 
       console.log('child ' + queue);
@@ -310,7 +303,7 @@
           'cartridge': {
             'url': c.url,
             'desc': c.desc,
-            'downstream': c.downstream
+            'downstream_folder': c.downstream_folder
           }
         });
 
@@ -340,8 +333,6 @@
       data: JSON.stringify(data)
     })
       .success(function (e) {
-        console.log(e);
-        console.log('https://gist.github.com/anonymous/' + e.id + '/raw');
         gist = 'https://gist.github.com/anonymous/' + e.id + '/raw';
 
         $('#alert').empty();
@@ -358,18 +349,5 @@
   update(root);
 
 })();
-
-var cartridgeSchema = {
-  'folder': {
-    'name': '',
-    'display_name': '',
-    'description': ''
-  },
-  'cartridge': {
-    'url': '',
-    'desc': '',
-    'downstream': ''
-  }
-};
 
 $('#generate').dialog({modal: false});
