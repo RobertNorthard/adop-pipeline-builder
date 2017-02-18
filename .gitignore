@@ -7,6 +7,5 @@ volumes/jenkins-home-vol
 *~
 *.swp
 *.swo
-
 node_modules/
 public/vendor/
