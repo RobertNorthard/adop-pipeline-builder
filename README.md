@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/gpa.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder) [![Issue Count](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/issue_count.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder)
+[![Issue Count](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/issue_count.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder)
 
 # The Integrated Pipeline builder
 
