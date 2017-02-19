@@ -289,9 +289,6 @@
 
       } catch (err) {}
 
-      console.log('child ' + queue);
-      console.log(c);
-
       if (c !== undefined) {
 
         cartridgeCollection.cartridges.push({
@@ -314,8 +311,6 @@
       }
     }
 
-    console.log(JSON.stringify(cartridgeCollection));
-
     var gistName = 'cartridge_collection.json'
     var gistDesciption = 'ADOP Cartridge Collection: ' + $('#projectName').val()
     var payload = {
@@ -335,7 +330,7 @@
       },
       function(error) {
           // handle error 
-          onsole.warn('gist save error', error);
+          console.warn('gist save error', error);
       });
   });
 
