@@ -10,9 +10,15 @@
 
 /* global $ */
 // haha such as hack.
-  $.get(properties.cartridges)
-    .done(function (data) {
-      cartridges = jsyaml.load(data);
+  $.get('/api/v1/properties')
+    .done(function (properties) {
+
+      $.get(JSON.parse(properties)['cartridges_url'])
+        .done(function (data) {
+          console.log(properties)
+          cartridges = jsyaml.load(data);
+          console.log(cartridges)
+      });
     });
 
   var json =
