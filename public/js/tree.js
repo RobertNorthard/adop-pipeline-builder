@@ -10,10 +10,15 @@
 
 /* global $ */
 // haha such as hack.
-  $.get('https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/cartridges.yml')
-    .done(function (data) {
-      cartridges = jsyaml.load(data);
-      var jsonString = JSON.stringify(data);
+  $.get('/api/v1/properties')
+    .done(function (properties) {
+
+      $.get(JSON.parse(properties)['cartridges_url'])
+        .done(function (data) {
+          console.log(properties)
+          cartridges = jsyaml.load(data);
+          console.log(cartridges)
+      });
     });
 
   var json =
