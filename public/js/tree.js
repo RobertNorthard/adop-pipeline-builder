@@ -1,4 +1,6 @@
 
+/* global jsyaml:true gist:true d3:true alert:true */
+/* eslint no-undef: "error" */
 (function () {
 
   var current;
@@ -15,10 +17,10 @@
 
       $.get(JSON.parse(properties)['cartridges_url'])
         .done(function (data) {
-          console.log(properties)
+          console.log(properties);
           cartridges = jsyaml.load(data);
-          console.log(cartridges)
-      });
+          console.log(cartridges);
+        });
     });
 
   var json =
@@ -101,7 +103,7 @@
         .attr('r', function (d) { return computeRadius(d); })
         .style('fill', function (d) { return d._children ? 'lightsteelblue' : '#fff'; });
 
-    var n = nodeUpdate.select('text').style('fill-opacity', 1);
+    nodeUpdate.select('text').style('fill-opacity', 1);
 
     // Transition exiting nodes to the parent's new position.
     var nodeExit = node.exit().transition()
@@ -151,7 +153,7 @@
   }
 
   function nbEndNodes (n) {
-    nb = 0;
+    var nb = 0;
     if (n.children) {
       n.children.forEach(function (c) {
         nb += nbEndNodes(c);
@@ -173,7 +175,7 @@
     if (current.type === 'int') {
       $('#manageComponant').dialog({modal: true});
     } else {
-      l = $.map(cartridges, function (v, k) { return k; });
+      var l = $.map(cartridges, function (v, k) { return k; });
       $('#cartridges').empty();
       for (var i in l) {
         $('#cartridges').append('<option value="' + l[i] + '">' + l[i] + '</option>');
@@ -316,8 +318,8 @@
       }
     }
 
-    var gistName = 'cartridge_collection.json'
-    var gistDesciption = 'ADOP Cartridge Collection: ' + $('#projectName').val()
+    var gistName = 'cartridge_collection.json';
+    var gistDesciption = 'ADOP Cartridge Collection: ' + $('#projectName').val();
     var payload = {
       data: cartridgeCollection
     };
@@ -326,16 +328,16 @@
       gistName,
       gistDesciption,
       JSON.stringify(payload),
-      function(success) {
+      function (success) {
         var gistUrl = gist.getGistUrl(success);
         $('#alert').empty();
         $('#alert').show();
         $('#alert').append("Your cartridge collection Gist: <a href='" + gistUrl + "'>" + gistUrl + '</a>');
         setTimeout(function () { $('#alert').hide(); }, 10000);
       },
-      function(error) {
-          // handle error 
-          console.warn('gist save error', error);
+      function (error) {
+          // handle error
+        console.warn('gist save error', error);
       });
   });
 

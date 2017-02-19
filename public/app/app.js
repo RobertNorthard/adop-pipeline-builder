@@ -4,7 +4,7 @@
 /* eslint no-undef: "error" */
 var app = angular.module('app', ['ngRoute']);
 
-angular.module('app').config(function ($routeProvider, $locationProvider) {
+app.config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider.when('/',
@@ -16,6 +16,6 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
 
 });
 
-angular.module('app').controller('mainCtrl', function ($scope) {
+app.controller('mainCtrl', function ($scope) {
 
 });
