@@ -1,4 +1,4 @@
-[![Code Climate](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/gpa.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder) [![Issue Count](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/issue_count.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder)
+[![Issue Count](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder/badges/issue_count.svg)](https://codeclimate.com/github/RobertNorthard/adop-pipeline-builder)
 
 # The Integrated Pipeline builder
 
@@ -7,3 +7,13 @@ The Integrated Pipeline builder enables users to draw their production ready end
 ![HomePage](https://raw.githubusercontent.com/RobertNorthard/adop-pipeline-builder/master/img/screenshot.png)
 
 If you load this cartridge it is possible to extend this tool.  Also look out for the related [Integrated Pipeline platform extension](https://github.com/statlus/adop-platform-extension-pipeline-builder) that can be used to add this to an ADOP.
+
+# Launching the pipeline builder
+
+The recommended method to launch the application is using `docker-compose up`. The application will be exposed on port 80.
+
+Alternatively, you can use `node server.js`.
+
+# Contribute
+
+Please feel free to contribute. Pull requests are welcome.
