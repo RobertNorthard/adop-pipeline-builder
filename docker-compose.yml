@@ -1,0 +1,10 @@
+---
+version: '2'
+services:
+  adop-pipeline-builder:
+    build: .
+    environment:
+      - CARTRIDGES_URL=https://gist.githubusercontent.com/kramos/ae04ccbb542ca7661b5568ae44c9f76f/raw/cartridges.yml
+    ports:
+      - "80/tcp:3000/tcp"
+...
